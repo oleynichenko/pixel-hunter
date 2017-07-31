@@ -1,6 +1,7 @@
 # Проект «Пиксель хантер» 
 
-* Разработано: [Alexandr Oleynichenko].
+* Разработано: Alexandr Oleynichenko
+
 
 ---
 
