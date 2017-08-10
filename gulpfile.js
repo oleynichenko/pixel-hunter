@@ -11,6 +11,9 @@ const mqpacker = require('css-mqpacker');
 const minify = require('gulp-csso');
 const rename = require('gulp-rename');
 const imagemin = require('gulp-imagemin');
+const rollup = require('gulp-better-rollup');
+const sourcemaps = require('gulp-sourcemaps');
+const mocha = require('gulp-mocha');
 
 gulp.task('style', function () {
   gulp.src('sass/style.scss')
@@ -36,12 +39,21 @@ gulp.task('style', function () {
 });
 
 gulp.task('scripts', function () {
-  return gulp.src('js/**/*.js')
+  return gulp.src('js/main.js')
     .pipe(plumber())
+    .pipe(sourcemaps.init())
+    .pipe(rollup({}, 'iife'))
+    .pipe(sourcemaps.write(''))
     .pipe(gulp.dest('build/js/'));
 });
 
 gulp.task('test', function () {
+  return gulp
+    .src(['js/**/*.test.js'], { read: false })
+    .pipe(mocha({
+      compilers: ['js:babel-register'], // Включим поддержку "import/export" в Mocha тестах
+      reporter: 'spec'       // Вид в котором я хочу отображать результаты тестирования
+    }));
 });
 
 gulp.task('imagemin', ['copy'], function () {
@@ -52,7 +64,6 @@ gulp.task('imagemin', ['copy'], function () {
     ]))
     .pipe(gulp.dest('build/img'));
 });
-
 
 gulp.task('copy-html', function () {
   return gulp.src('*.html')
@@ -87,7 +98,7 @@ gulp.task('serve', ['assemble'], function () {
   });
 
   gulp.watch('sass/**/*.{scss,sass}', ['style']);
-  gulp.watch('*.html', ['copy-html']);
+  // gulp.watch('*.html', ['copy-html']);
   gulp.watch('js/**/*.js', ['js-watch']);
 });
 

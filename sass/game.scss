@@ -45,6 +45,15 @@
 
   text-align: center;
   vertical-align: middle;
+
+  overflow: hidden; // добавлено мной
+}
+
+.game__img {
+}
+
+.game__option img {
+  width: 100%;
 }
 
 .game__answer input {
@@ -100,15 +109,15 @@
   }
 
   .game__answer {
-    top: 208px;
+    top: 200px;
   }
 
   .game__answer--photo {
-    left: -100px
+    left: 30px; // my changes
   }
 
   .game__answer--paint {
-    right: -100px;
+    right: 30px; // my changes
   }
 }
 
