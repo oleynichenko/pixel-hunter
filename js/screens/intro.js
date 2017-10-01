@@ -1,11 +1,13 @@
 import IntroView from './intro-view';
-import greeting from './greeting';
 
+const intro = new class {
+  constructor() {
+    this._view = new IntroView();
+  }
 
-const intro = new IntroView();
-
-intro.onNext = function () {
-  greeting.showScreen();
-};
+  init() {
+    this._view.showScreen();
+  }
+}();
 
 export default intro;

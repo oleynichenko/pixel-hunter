@@ -7,17 +7,18 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
 }
 
 .stats__result {
   display: inline-block;
-  vertical-align: bottom;
+  vertical-align: middle;
 
   overflow: hidden;
   width: 30px;
   height: 30px;
 
-  margin: 5px;
+  margin: 10px;
 
   &--unknown {
     background: url("../img/unknown.svg") no-repeat center;

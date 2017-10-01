@@ -1,10 +1,26 @@
 import RulesView from './rules-view';
-import changeLevel from './level';
+import app from '../app';
+import model from '../model';
 
-const rules = new RulesView();
+class Rules {
+  constructor() {
+    this._view = new RulesView();
+  }
 
-rules.onNext = function () {
-  changeLevel().showScreen();
-};
+  init() {
+    this._view.onNext = function (name) {
+      app.level();
+      model.userName = name;
+    };
+
+    this._view.onHeaderBack = () => {
+      app.reload();
+    };
+
+    this._view.showScreen();
+  }
+}
+
+const rules = new Rules();
 
 export default rules;

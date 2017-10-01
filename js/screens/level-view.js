@@ -4,12 +4,13 @@ import header from '../header.js';
 import footer from '../footer.js';
 
 export default class LevelView extends AbstractView {
-  constructor(state) {
+  constructor(state, data) {
     super();
     this.state = state;
-    this.level = getLevel(this.state.level);
+    this.level = getLevel(this.state.level, data);
     this.task = getTask(this.level);
     this.hasQuestion = checkIsQuestion(this.task);
+    this.time = this.state.time;
   }
 
   _getImageType(num) {
@@ -24,7 +25,6 @@ export default class LevelView extends AbstractView {
   // возвращает выбранный input
   _getCheckedInput(arr) {
     const elem = arr.find((input) => input.checked);
-            console.log(elem);
     return elem;
   }
 
@@ -37,14 +37,12 @@ export default class LevelView extends AbstractView {
   _isQuestionsAnswerRight(form) {
     return this.task.questions.every((question, index) => {
       const arr = this._getInputElements(form, question);
-      console.log(question);
-        console.log(arr);
       return this._getCheckedInput(arr).value === this._getImageType(index);
     });
   }
 
   _isChoosenAnswerRight(num) {
-    return this.level.images[num].type === `paint`;
+    return this.level.images[num].type === `painting`;
   }
 
   _templateQuestion(num) {
@@ -54,12 +52,12 @@ export default class LevelView extends AbstractView {
         <span>Фото</span>
       </label>
       <label class="game__answer game__answer--paint">
-        <input name="question-${num}" type="radio" value="paint">
+        <input name="question-${num}" type="radio" value="painting">
         <span>Рисунок</span>
       </label>`;
   }
 
-  _levelOption(photo, index) {
+  _templateGameOption(photo, index) {
     return `
       <div class="game__option">
         <img src="${photo}" alt="Option ${index}">
@@ -73,25 +71,53 @@ export default class LevelView extends AbstractView {
       <div class="game">
         <p class="game__task">${this.task.title}</p>
         <form class="game__content ${this.task.class}">
-          ${this.level.images.map((value, index) => this._levelOption(value.src, index + 1)).join(``)}
+          ${this.level.images.map((value, index) => this._templateGameOption(value.src, index + 1)).join(``)}
         </form>
+      </div>
+      <div class="stats">
+        <ul class="stats">
+          ${this.state.results.map((item) => `<li class="stats__result stats__result--${item}"></li>`).join(``)}
+        </ul>
       </div>
       ${footer}`;
   }
 
   bind() {
+    // установка таймера времени
+    const gameTimer = this.element.querySelector(`.game__timer`);
+
+    const timer = setInterval(() => {
+      this.time--;
+      gameTimer.innerHTML = `${this.time}`;
+      if (this.time === 0) {
+        clearInterval(timer);
+        this.onNext(false, this.time);
+      }
+    }, 1000);
+
     const gameContent = this.element.querySelector(`.game__content`);
     const gameOptions = this.element.querySelectorAll(`.game__option`);
 
     Array.from(gameOptions).forEach((option, optionIndex) => {
       option.addEventListener(`click`, (evt) => {
         if (this.hasQuestion && this._isAnswered(gameContent)) {
-          this.onNext(this._isQuestionsAnswerRight(gameContent));
+          clearInterval(timer);
+          this.onNext(this._isQuestionsAnswerRight(gameContent), this.time);
         }
         if (!this.hasQuestion) {
-          this.onNext(this._isChoosenAnswerRight(optionIndex));
+          clearInterval(timer);
+          this.onNext(this._isChoosenAnswerRight(optionIndex), this.time);
         }
       });
     });
+
+    // обработка возврата на начальный экрн
+    const headerBack = this.element.querySelector(`.header__back`);
+
+    headerBack.addEventListener(`click`, (evt) => {
+      event.preventDefault();
+      this.onHeaderBack();
+    });
+
   }
 }

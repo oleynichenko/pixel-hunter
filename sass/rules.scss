@@ -11,6 +11,11 @@
 
 .rules__description {
   @include regular-text;
+
+  & img {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 .rules__form {

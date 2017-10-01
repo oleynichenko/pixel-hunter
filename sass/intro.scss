@@ -3,6 +3,9 @@
 .intro {
   width: 800px;
   height: 740px;
+
+  margin-top: 60px;
+
   background: url("../img/egg_big.png") no-repeat center;
   background-size: contain;
 
@@ -13,12 +16,21 @@
   text-align: center;
 
   font-size: 172px;
+  line-height: 130px;
   color: $main-red-color;
   cursor: pointer;
 
-  position: relative;
-  top: 220px;
-  left: 30px;
+  position: absolute;
+  top: 280px;
+  left: 396px;
+  width: 78px;
+  height: 78px;
+  margin: 0;
+
+  animation: spin;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 
   &:hover {
     color: $link-hover-color;
@@ -34,4 +46,13 @@
 
   position: absolute;
   bottom: 0;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

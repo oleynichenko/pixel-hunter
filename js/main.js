@@ -1,3 +1,2 @@
-import intro from './screens/intro.js';
-
-intro.showScreen();
+import app from './app';
+app.init();
