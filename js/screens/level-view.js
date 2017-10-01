@@ -83,6 +83,7 @@ export default class LevelView extends AbstractView {
   }
 
   bind() {
+
     // установка таймера времени
     const gameTimer = this.element.querySelector(`.game__timer`);
 
@@ -99,7 +100,7 @@ export default class LevelView extends AbstractView {
     const gameOptions = this.element.querySelectorAll(`.game__option`);
 
     Array.from(gameOptions).forEach((option, optionIndex) => {
-      option.addEventListener(`click`, (evt) => {
+      option.addEventListener(`click`, (event) => {
         if (this.hasQuestion && this._isAnswered(gameContent)) {
           clearInterval(timer);
           this.onNext(this._isQuestionsAnswerRight(gameContent), this.time);
@@ -114,8 +115,8 @@ export default class LevelView extends AbstractView {
     // обработка возврата на начальный экрн
     const headerBack = this.element.querySelector(`.header__back`);
 
-    headerBack.addEventListener(`click`, (evt) => {
-      event.preventDefault();
+    headerBack.addEventListener(`click`, (event) => {
+      event.preventDefault(event);
       this.onHeaderBack();
     });
 

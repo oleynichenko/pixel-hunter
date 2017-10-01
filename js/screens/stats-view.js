@@ -109,8 +109,8 @@ export default class StatsView extends AbstractView {
 
   bind() {
     const headerBack = this.element.querySelector(`.header__back`);
-    headerBack.addEventListener(`click`, (evt) => {
-      event.preventDefault();
+    headerBack.addEventListener(`click`, (event) => {
+      event.preventDefault(event);
       this.onHeaderBack();
     });
   }

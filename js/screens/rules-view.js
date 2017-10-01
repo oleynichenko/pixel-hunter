@@ -34,13 +34,13 @@ export default class RulesView extends AbstractView {
       rulesBtn.disabled = rulesInput.value.length === 0;
     });
 
-    rulesBtn.addEventListener(`click`, () => {
+    rulesBtn.addEventListener(`click`, (event) => {
       event.preventDefault();
       this.onNext(rulesInput.value);
     });
 
     const headerBack = this.element.querySelector(`.header__back`);
-    headerBack.addEventListener(`click`, (evt) => {
+    headerBack.addEventListener(`click`, (event) => {
       event.preventDefault();
       this.onHeaderBack();
     });

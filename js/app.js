@@ -44,7 +44,6 @@ class App {
 
   _changeController(route) {
     const controller = this.routes[route];
-
     if (!controller) {
       this.showGreeting();
     } else {
@@ -77,7 +76,9 @@ class App {
   }
 
   reload() {
-    location.href = location.origin;
+    location.hash = ControllerID.GREETING;
+    // location.href = location.origin;
+    location.reload();
   }
 }
 
